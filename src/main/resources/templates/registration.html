@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="POST" th:action="@{/register}" id="user">
+    <label for="username">Username: </label>
+    <input type="text" name="username">
+
+    <label for="password">Password: </label>
+    <input type="password" name="password">
+
+    <label for="confirm">Confirm password: </label>
+    <input type="password" name="confirm">
+
+    <label for="firstName">Full name: </label>
+    <input type="text" name="firstName">
+
+    <label for="lastName">Full name: </label>
+    <input type="text" name="lastName">
+
+    <label for="phoneNumber">Phone number: </label>
+    <input type="text" name="phoneNumber">
+
+    <input type="submit" value="Register">
+</form>
+</body>
+</html>

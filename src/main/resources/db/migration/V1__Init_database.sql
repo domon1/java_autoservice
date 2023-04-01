@@ -60,7 +60,7 @@ create table usr (
     id bigint not null auto_increment,
     first_name varchar(40) not null,
     last_name varchar(40) not null,
-    login varchar(50) not null,
+    username varchar(50) not null,
     password varchar(255) not null,
     phone_number varchar(11) not null,
     primary key (id));

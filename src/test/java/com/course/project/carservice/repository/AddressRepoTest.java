@@ -11,9 +11,9 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AddressRepositoryTest extends IntegrationTestBase {
-    /*@Autowired
-    private AddressRepository addressRepository;
+class AddressRepoTest extends IntegrationTestBase {
+    @Autowired
+    private AddressRepo addressRepo;
 
     public static final Long ADDRESS_ID = 1L;
 
@@ -27,7 +27,7 @@ class AddressRepositoryTest extends IntegrationTestBase {
 
     @Test
     void testFindById(){
-        Optional<Address> address = addressRepository.findById(ADDRESS_ID);
+        Optional<Address> address = addressRepo.findById(ADDRESS_ID);
         assertTrue(address.isPresent());
         address.ifPresent( entity -> {
             assertEquals("Leninskaya", entity.getStreet());
@@ -41,7 +41,7 @@ class AddressRepositoryTest extends IntegrationTestBase {
                 .street("Shkolnaya")
                 .house("16A")
                 .build();
-        addressRepository.save(address);
+        addressRepo.save(address);
         assertNotNull(address.getId());
-    }*/
+    }
 }
