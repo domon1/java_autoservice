@@ -27,7 +27,12 @@ public class WebSecurityConfig{
                         .loginPage("/login")
                         .permitAll()
                 )
-                .logout(LogoutConfigurer::permitAll);
+                .logout((logout) -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/home")
+                        .invalidateHttpSession(true)
+
+                );
 
         return httpSecurity.build();
     }
