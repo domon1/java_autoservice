@@ -22,5 +22,5 @@ public class Category {
 
     // Связи
     @OneToMany(mappedBy = "category")
-    private Set<Service> services;
+    private Set<AutoService> autoServices;
 }

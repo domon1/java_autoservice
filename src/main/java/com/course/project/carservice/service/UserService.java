@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -20,7 +22,7 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Override
+    @Override  // add user not found exception
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepo.findByUsername(username);
     }
@@ -41,4 +43,32 @@ public class UserService implements UserDetailsService {
 
         return true;
     }
+
+    public void save(User user){
+        userRepo.save(user);
+    }
+
+    public Optional<User> findById(Long id){
+        return userRepo.findById(id);
+    }
+
+    public List<User> findAll(){
+        return userRepo.findAll();
+    }
+
+    /*public List<User> findAllUser(){
+        return userRepo.findByRole(Collections.singleton(Role.USER));
+    }
+
+    public List<User> findAllStaff(){
+        return userRepo.findByRole(Collections.singleton(Role.STAFF));
+    }
+
+    public List<User> findAllManager(){
+        return userRepo.findByRole(Collections.singleton(Role.MANAGER));
+    }
+
+    public List<User> findAllMaster(){
+        return userRepo.findByRole(Collections.singleton(Role.MASTER));
+    }*/
 }

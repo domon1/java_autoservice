@@ -35,7 +35,7 @@ public class UserRecord {
     private RecordingTime time;
     @ManyToOne
     @JoinColumn(name = "service_id")
-    private Service service;
+    private AutoService autoService;
     @ManyToOne
     @JoinColumn(name = "address_id")
     private Address address;
