@@ -1,5 +1,7 @@
 package com.course.project.carservice.controller;
 
+import com.course.project.carservice.domain.AutoService;
+import com.course.project.carservice.domain.Category;
 import com.course.project.carservice.domain.Role;
 import com.course.project.carservice.domain.User;
 import com.course.project.carservice.service.CategoryService;
@@ -64,6 +66,69 @@ public class ManagerController {
 
         userService.save(user);
 
+        return "redirect:/manager";
+    }
+
+    @PostMapping("category/newCategory")
+    public String newCategory(Category category){
+        categoryService.save(category);
+        return "redirect:/manager";
+    }
+
+    @GetMapping("/category/{id}")
+    public String category(@PathVariable("id") Long id, Model model){
+        model.addAttribute("category", categoryService.findById(id));
+        return "/category";
+    }
+
+    @PostMapping("/category/{id}")
+    public String editCategory(
+            @RequestParam("id") Category category,
+            @RequestParam String name
+    ){
+        category.setName(name);
+        categoryService.save(category);
+        return "redirect:/manager";
+    }
+
+    @GetMapping("category/delete/{id}")
+    public String deleteCategory(@PathVariable("id") Long id){
+        categoryService.delete(id);
+        return "redirect:/manager";
+    }
+
+    @PostMapping("service/newService")
+    public String newService(AutoService autoService){
+        servicesService.save(autoService);
+        return "redirect:/manager";
+    }
+
+    @GetMapping("/service/{id}")
+    public String service(@PathVariable("id") Long id, Model model){
+        model.addAttribute("service", servicesService.findById(id));
+        model.addAttribute("categories", categoryService.findAll());
+        return "/service";
+    }
+
+    @PostMapping("/service/{id}")
+    public String editService(
+            @RequestParam("id") AutoService autoService,
+            @RequestParam String name,
+            @RequestParam String description,
+            @RequestParam Integer price,
+            @RequestParam Category category
+    ){
+        autoService.setName(name);
+        autoService.setDescription(description);
+        autoService.setPrice(price);
+        autoService.setCategory(category);
+        servicesService.save(autoService);
+        return "redirect:/manager";
+    }
+
+    @GetMapping("service/delete/{id}")
+    public String deleteService(@PathVariable("id") Long id){
+        servicesService.delete(id);
         return "redirect:/manager";
     }
 }

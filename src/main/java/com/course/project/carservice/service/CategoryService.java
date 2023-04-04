@@ -5,6 +5,7 @@ import com.course.project.carservice.repository.CategoryRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
@@ -19,5 +20,16 @@ public class CategoryService {
         return categoryRepo.findAll();
     }
 
+    public void save(Category category){
+        categoryRepo.save(category);
+    }
+
+    public Optional<Category> findById(Long id){
+        return categoryRepo.findById(id);
+    }
+
+    public void delete(Long id){
+        categoryRepo.deleteById(id);
+    }
 
 }

@@ -12,13 +12,23 @@
 
 <div class="d-flex align-items-start">
     <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-        <button class="nav-link active" id="v-pills-users-tab" data-bs-toggle="pill" data-bs-target="#v-pills-users" type="button" role="tab" aria-controls="v-pills-users" aria-selected="true">Пользователи</button>
-        <button class="nav-link" id="v-pills-staff-tab" data-bs-toggle="pill" data-bs-target="#v-pills-staff" type="button" role="tab" aria-controls="v-pills-staff" aria-selected="false">Сотрудники</button>
-        <button class="nav-link" id="v-pills-category-tab" data-bs-toggle="pill" data-bs-target="#v-pills-category" type="button" role="tab" aria-controls="v-pills-category" aria-selected="false">Категории</button>
-        <button class="nav-link" id="v-pills-services-tab" data-bs-toggle="pill" data-bs-target="#v-pills-services" type="button" role="tab" aria-controls="v-pills-services" aria-selected="false">Услуги</button>
+        <button class="nav-link active" id="v-pills-users-tab" data-bs-toggle="pill" data-bs-target="#v-pills-users"
+                type="button" role="tab" aria-controls="v-pills-users" aria-selected="true">Пользователи
+        </button>
+        <button class="nav-link" id="v-pills-staff-tab" data-bs-toggle="pill" data-bs-target="#v-pills-staff"
+                type="button" role="tab" aria-controls="v-pills-staff" aria-selected="false">Сотрудники
+        </button>
+        <button class="nav-link" id="v-pills-category-tab" data-bs-toggle="pill" data-bs-target="#v-pills-category"
+                type="button" role="tab" aria-controls="v-pills-category" aria-selected="false">Категории
+        </button>
+        <button class="nav-link" id="v-pills-services-tab" data-bs-toggle="pill" data-bs-target="#v-pills-services"
+                type="button" role="tab" aria-controls="v-pills-services" aria-selected="false">Услуги
+        </button>
     </div>
     <div class="tab-content" id="v-pills-tabContent">
-        <div class="tab-pane fade show active" id="v-pills-users" role="tabpanel" aria-labelledby="v-pills-users-tab" tabindex="0">
+        <!-- TODO: Добавить поиск по логину и номеру телефона -->
+        <div class="tab-pane fade show active" id="v-pills-users" role="tabpanel" aria-labelledby="v-pills-users-tab"
+             tabindex="0">
             <div class="row row-cols-1 row-cols-md-2 g-4 mx-3 my-3">
                 <div class="col" th:each="user : ${users}">
                     <div class="card">
@@ -37,11 +47,88 @@
         <div class="tab-pane fade" id="v-pills-staff" role="tabpanel" aria-labelledby="v-pills-staff-tab" tabindex="0">
             <div>Soon later</div>
         </div>
-        <div class="tab-pane fade" id="v-pills-category" role="tabpanel" aria-labelledby="v-pills-category-tab" tabindex="0">
-            <div>Soon later</div>
+        <div class="tab-pane fade" id="v-pills-category" role="tabpanel" aria-labelledby="v-pills-category-tab"
+             tabindex="0">
+            <div>
+                <p>
+                    <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        Добавить
+                    </a>
+                </p>
+                <div class="collapse" id="collapseExample">
+                    <form class="row g-3" method="POST" th:action="@{/manager/category/newCategory}" id="category">
+                        <div class="col-md-6">
+                            <label for="inputCategoryName" class="form-label">Название</label>
+                            <input type="text" class="form-control" id="inputCategoryName" name="name">
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary my-3">Создать</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row row-cols-1 row-cols-md-2 g-4 mx-3 my-3">
+                <div class="col" th:each="category : ${categories}">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${category.id}"></h5>
+                            <p class="card-text" th:text="${category.name}"></p>
+                            <a th:href="@{'/manager/category/'+${category.id}}" class="btn btn-primary">Изменить</a>
+                            <a th:href="@{'/manager/category/delete/'+${category.id}}" class="btn btn-primary">Удалить</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="tab-pane fade" id="v-pills-services" role="tabpanel" aria-labelledby="v-pills-services-tab" tabindex="0">
-            <div>Soon latter</div>
+    </div>
+    <div class="tab-pane fade" id="v-pills-services" role="tabpanel" aria-labelledby="v-pills-services-tab"
+         tabindex="0">
+        <p>
+            <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+                Добавить
+            </a>
+        </p>
+        <div class="collapse" id="collapse">
+            <form class="row g-3" method="POST" th:action="@{/manager/service/newService}">
+                <div class="col-md-6">
+                    <label for="inputServiceName" class="form-label">Название</label>
+                    <input type="text" class="form-control" id="inputServiceName" name="name">
+                </div>
+                <div class="col-md-6">
+                    <label for="inputServiceDescription" class="form-label">Описание</label>
+                    <input type="text" class="form-control" id="inputServiceDescription" name="description">
+                </div>
+                <div class="col-md-6">
+                    <label for="inputServiceCategory" class="form-label">Категория</label>
+                    <select class="form-select" id="inputServiceCategory" aria-label="Default select example" name="category">
+                        <option th:each="category : ${categories}"
+                                th:text="${category.name}"
+                                th:value="${category.id}"
+                        />
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="inputServicePrice" class="form-label">Стоимость</label>
+                    <input type="number" class="form-control" id="inputServicePrice" name="price">
+                </div>
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary my-3">Создать</button>
+                </div>
+            </form>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 g-4 mx-3 my-3">
+            <div class="col" th:each="autoservice : ${services}">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${autoservice.id}"></h5>
+                        <p class="card-text" th:text="${autoservice.name}"></p>
+                        <p class="card-text" th:text="${autoservice.price}"></p>
+                        <p class="card-text" th:text="${autoservice.category.name}"></p>
+                        <a th:href="@{'/manager/service/'+${autoservice.id}}" class="btn btn-primary">Изменить</a>
+                        <a th:href="@{'/manager/service/delete/'+${autoservice.id}}" class="btn btn-primary">Удалить</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

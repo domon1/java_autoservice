@@ -5,6 +5,7 @@ import com.course.project.carservice.repository.AutoServiceRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServicesService {
@@ -14,12 +15,16 @@ public class ServicesService {
         this.autoServiceRepo = autoServiceRepo;
     }
 
-    public void addService(AutoService autoService){
+    public void save(AutoService autoService){
         autoServiceRepo.save(autoService);
     }
 
-    public void removeService(AutoService autoService){
-        autoServiceRepo.delete(autoService);
+    public void delete(Long id){
+        autoServiceRepo.deleteById(id);
+    }
+
+    public Optional<AutoService> findById(Long id){
+        return autoServiceRepo.findById(id);
     }
 
     public List<AutoService> findAll(){
