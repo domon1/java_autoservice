@@ -23,12 +23,15 @@ public class ManagerController {
     private final ServicesService servicesService;
     private final CategoryService categoryService;
 
-    public ManagerController(UserService userService, ServicesService servicesService, CategoryService categoryService) {
+    public ManagerController(
+            UserService userService,
+            ServicesService servicesService,
+            CategoryService categoryService
+    ) {
         this.userService = userService;
         this.servicesService = servicesService;
         this.categoryService = categoryService;
     }
-
 
     @GetMapping
     public String index(Model model){
