@@ -19,6 +19,7 @@ public class ServicesService {
         autoServiceRepo.save(autoService);
     }
 
+    /* TODO ддобавить в бд скрипт каскадное удаление (set 1) */
     public void delete(Long id){
         autoServiceRepo.deleteById(id);
     }

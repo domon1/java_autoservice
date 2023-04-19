@@ -21,4 +21,8 @@ public class AddressService {
     public void save(Address address){
         addressRepo.save(address);
     }
+
+    public void delete(Address address){
+        addressRepo.delete(address);
+    }
 }
