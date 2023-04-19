@@ -12,9 +12,56 @@
 <!-- Навигационная панель  -->
 <div th:replace="~{navbar::navigation}"></div>
 
-<div class="container">
-
-</div>
+<form>
+    <div class="col-md-6">
+        <label for="inputCarMark" class="form-label">Категория</label>
+        <select class="form-select" id="inputCarMark" aria-label="Default select example" name="carMark">
+            <option th:each="category : ${categories}"
+                    th:text="${category.name}"
+                    th:value="${category.id}"
+            />
+            <!--<option value="1">CHEVROLET</option>
+            <option value="2">KIA</option>
+            <option value="3">FORD</option>
+            <option value="4">LADA</option>-->
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label for="inputCarModel" class="form-label">Категория</label>
+        <select class="form-select" id="inputCarModel" aria-label="Default select example" name="carModel">
+            <option th:each="category : ${categories}"
+                    th:text="${category.name}"
+                    th:value="${category.id}"
+            />
+            <!--<option value="1">AVEO</option>
+            <option value="2">CRUSE</option>
+            <option value="3">NIVA</option>
+            <option value="4">OPTIMA</option>
+            <option value="4">RIO</option>
+            <option value="4">SEED</option>
+            <option value="4">FOCUS</option>
+            <option value="4">MONDEO</option>
+            <option value="4">FIESTA</option>
+            <option value="4">GRANTA</option>
+            <option value="4">PRIORA</option>
+            <option value="4">VESTA</option>-->
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Email address</label>
+        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+    </div>
+    <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Password</label>
+        <input type="password" class="form-control" id="exampleInputPassword1">
+    </div>
+    <div class="mb-3 form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
         integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
