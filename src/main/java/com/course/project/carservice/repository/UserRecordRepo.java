@@ -10,6 +10,6 @@ import java.util.List;
 
 @Repository
 public interface UserRecordRepo extends JpaRepository<UserRecord, Long> {
-    List<UserRecord> findAllByDateAfter(LocalDate date);
+    List<UserRecord> findAllByDate(LocalDate date);
     List<UserRecord> findAllByUser(User user);
 }

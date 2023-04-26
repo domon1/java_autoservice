@@ -20,7 +20,7 @@
                     Действия
                 </a>
                 <ul class="dropdown-menu" >
-                    <li><a class="dropdown-item" href="#">Личный кабинет</a></li>
+                    <li><a class="dropdown-item" th:href="@{/personal}">Личный кабинет</a></li>
                     <!-- TODO Добавить условие: только для менеджера (sec:authorize неработает!?) -->
                     <li sec:authorize="${hasAuthority('MANAGER')}"><a class="dropdown-item" th:href="@{/manager}">!MANAGER!</a></li>
                     <li><hr class="dropdown-divider"></li>

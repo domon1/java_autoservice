@@ -16,9 +16,4 @@ public class MainController {
     public String login(){
         return "login";
     }
-
-    @GetMapping("/hello")
-    public String hello(){
-        return "hello";
-    }
 }
