@@ -1,7 +1,6 @@
 package com.course.project.carservice.service;
 
 import com.course.project.carservice.domain.RecordingTime;
-import com.course.project.carservice.domain.User;
 import com.course.project.carservice.domain.UserRecord;
 import com.course.project.carservice.repository.UserRecordRepo;
 import com.course.project.carservice.util.UserRecordNotFoundException;
@@ -32,21 +31,20 @@ public class RecordService {
     public List<RecordingTime> getFreeTime(LocalDate date){
         List<RecordingTime> times = timeService.findAll();
         List<UserRecord> allByDate = userRecordRepo.findAllByDate(date);
-        List<RecordingTime> retTimes = new ArrayList<>();
 
-        for (UserRecord userRecord: allByDate){
-            for (RecordingTime time: times){
-                if (!(userRecord.getTime() == time)){
-                    retTimes.add(time);
+        if (allByDate.isEmpty()){
+            return times;
+        } else {
+            List<RecordingTime> retTimes = new ArrayList<>();
+            for (UserRecord userRecord: allByDate){
+                for (RecordingTime time: times){
+                    if (!(userRecord.getTime() == time)){
+                        retTimes.add(time);
+                    }
                 }
             }
+            return retTimes;
         }
-
-        return retTimes;
-    }
-
-    public List<UserRecord> findByUser(User user){
-        return  userRecordRepo.findAllByUser(user);
     }
 
     public void save(UserRecord userRecord){

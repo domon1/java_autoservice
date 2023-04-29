@@ -40,10 +40,9 @@ create table record (
     model varchar(20) not null,
     name varchar(20) not null,
     state varchar(15) not null,
-    address_id bigint not null,
     service_id bigint not null,
     time_id bigint not null,
-    phone_number bigint not null,
+    phone_number varchar(10) not null,
     primary key (id));
 
 create table spare (
@@ -62,7 +61,7 @@ create table usr (
     last_name varchar(40) not null,
     username varchar(50) not null,
     password varchar(255) not null,
-    phone_number varchar(11) not null,
+    phone_number varchar(10) not null,
     primary key (id));
 
 create table usr_service (
@@ -85,9 +84,7 @@ alter table order_workservice add constraint fk_workservice_order foreign key (w
 alter table order_workservice add constraint fk_order_workservice foreign key (ordr_id) references ordr (id);
 alter table ordr add constraint fk_order_record foreign key (record_id) references record (id);
 alter table ordr add constraint fk_order_staff foreign key (staff_id) references usr (id);
-alter table record add constraint fk_record_address foreign key (address_id) references address (id);
 alter table record add constraint fk_record_service foreign key (service_id) references usr_service (id);
 alter table record add constraint fk_record_time foreign key (time_id) references rec_time (id);
-alter table record add constraint fk_record_phone foreign key (phone_number) references usr (id);
 alter table user_role add constraint fk_user_role foreign key (user_id) references usr (id);
 alter table usr_service add constraint fk_service_category foreign key (category_id) references category (id);

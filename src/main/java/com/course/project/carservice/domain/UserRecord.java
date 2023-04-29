@@ -25,20 +25,16 @@ public class UserRecord {
     private String state;
     private String mark;
     private String model;
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
     // Связи
-    @ManyToOne
-    @JoinColumn(name = "phone_number")
-    private User user;
     @ManyToOne
     @JoinColumn(name = "time_id")
     private RecordingTime time;
     @ManyToOne
     @JoinColumn(name = "service_id")
     private AutoService autoService;
-    @ManyToOne
-    @JoinColumn(name = "address_id")
-    private Address address;
     @OneToMany(mappedBy = "record")
     private Set<Order> orders;
 }

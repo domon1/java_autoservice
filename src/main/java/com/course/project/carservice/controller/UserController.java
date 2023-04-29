@@ -20,7 +20,6 @@ public class UserController {
 
     @GetMapping
     public String personalArea(@AuthenticationPrincipal User user, Model model){
-        model.addAttribute("records", recordService.findByUser(user));
         model.addAttribute("userInfo", user);
         return "personalArea";
     }

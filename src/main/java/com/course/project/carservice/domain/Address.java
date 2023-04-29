@@ -20,7 +20,4 @@ public class Address {
     private Long id;
     private String street;
     private String house;
-
-    @OneToMany(mappedBy = "address")
-    private Set<UserRecord> records;
 }

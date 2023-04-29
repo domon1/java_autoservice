@@ -41,10 +41,6 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> role;
 
-    // Связи
-    @OneToMany(mappedBy = "user")
-    private Set<UserRecord> records;
-
     // userDetail methods
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

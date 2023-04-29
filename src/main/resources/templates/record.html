@@ -13,25 +13,22 @@
 <div th:replace="~{navbar::navigation}"></div>
 
 <div class="container">
-    <form class="row g-3" method="POST">
+    <h3>Запишитесь на СТО</h3>
+    <div class="row g-3">
         <div class="col-md-6">
             <label for="inputCarMark" class="form-label">Марка</label>
-                <select class="form-select" id="inputCarMark" aria-label="Default select example" name="mark"
-                         onchange="markClick(this)">
-                    <option th:each="carMark : ${carMarks}"
-                            th:text="${carMark.name}"
-                            th:value="${carMark.id}"
-                    />  <!-- TODO добавить вызов markClick() при загрузке -->
-                </select>
+            <select class="form-select" id="inputCarMark" aria-label="Default select example" name="mark"
+                    onchange="markClick(this)">
+                <option th:each="carMark : ${carMarks}"
+                        th:text="${carMark.name}"
+                        th:value="${carMark.id}"
+                />  <!-- TODO добавить вызов markClick() при загрузке -->
+            </select>
         </div>
         <div class="col-md-6">
             <label for="inputCarModel" class="form-label">Модель</label>
-                <select class="form-select" id="inputCarModel" aria-label="Default select example" name="model">
-                    <option th:each="carModel : ${carModels}"
-                            th:text="${carModel.name}"
-                            th:value="${carModel.mark.id}"
-                    />
-                </select>
+            <select class="form-select" id="inputCarModel" aria-label="Default select example" name="model">
+            </select>
         </div>
         <div class="col-md-6">
             <label for="inputDate" class="form-label" id="datePicker">
@@ -42,33 +39,130 @@
         <div class="col-md-6">
             <label for="inputTime" class="form-label">Свободное время</label>
             <select class="form-select" id="inputTime" aria-label="Default select example" name="time">
-                <option th:each="time : ${times}"
-                        th:text="${time.timeValue}"
-                        th:value="${time.id}"
-                />
             </select>
         </div>
-    </form>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+        onclick="generateConfirm()">
+            Записаться на СТО
+        </button>
+    </div>
+</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Подтвердите запись</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- TODO добавить аттрибут name в input-ы -->
+            <div class="modal-body">
+                <form method="post" th:action="@{/record}" id="userRecord">
+                    <div class="row">
+                        <div class="mb-3 col-12">
+                            <div class="row">
+                                <div class="col-6">Автомобиль: </div>
+                                <div class="col-6" id="carText"></div>
+                                <input type="hidden" class="form-control" name="mark" id="confirmCarMark" readonly>
+                                <input type="hidden" class="form-control" name="model" id="confirmCarModel" readonly>
+                            </div>
+                        </div>
+                        <div class="mb-3 col-12">
+                            <div class="row">
+                                <div class="col-6">Дата и время: </div>
+                                <div class="col-6" id="dateText"></div>
+                                <input type="hidden" class="form-control" name="date" id="confirmDate" readonly>
+                                <input type="hidden" class="form-control" name="time" id="confirmTime" readonly>
+                            </div>
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label for="message-text" class="col-form-label">Комментарий: </label>
+                            <textarea class="form-control" id="message-text" maxlength="255" name="comment" placeholder="Впишите сюда все, что должен знать наш специалист, при прриёмке вашего автомобиля" th:maxlength="255"></textarea>
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label for="recipient-name" class="col-form-label">Имя:</label>
+                            <input type="text" class="form-control" id="recipient-name" name="name" placeholder="Введите ваше имя">
+                        </div>
+                        <div class="mb-3 col-12">
+                            <label for="recipient-phone" class="col-form-label">Телефон:</label>
+                            <input type="text" class="form-control" id="recipient-phone" name="phoneNumber" placeholder="8(xxx)xxx-xx-xx" minlength="10" maxlength="10">
+                        </div>
+                        <div>
+                            <input type="hidden" class="form-control" th:value="${service.get().id}" name="autoService" readonly>
+                            <input type="hidden" class="form-control" value="wait" name="state" readonly>
+                        </div>
+                        <div class="mb-3 col-12">
+                            <button type="submit" class="btn btn-primary">Подтвердить</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-    function markClick(select){
-        const selectedOption = select.options[select.selectedIndex];
-        const modelOption = document.getElementById("inputCarModel").options;
-        for(let i=0; i<modelOption.length; i++){
-            modelOption[i].removeAttribute('hidden');
-        }
-        for(let i=0; i<modelOption.length; i++){
-            if (modelOption[i].value !== selectedOption.value){
-                modelOption[i].setAttribute('hidden', true);
+    function markClick(select) {
+        const selectOption = select.options[select.selectedIndex];
+
+        const model = async () => {
+            const response = await fetch('http://localhost:8080/rest-car/model/' + selectOption.value);
+            const data = await response.json();
+
+            let option = "";
+
+            for (let i = 0; i < data.length; i++) {
+                option += "<option value=" + data[i].id + ">" + data[i].name + "</option>";
             }
+            document.getElementById("inputCarModel").innerHTML = option;
         }
+        model().then();
     }
 
-    function datePick(select){
+    function datePick(select) {
         const selectedDate = select.value;
-        alert(selectedDate);
-        // TODO добавить вычисление свободного времени для select'а со временем
+
+        const model = async () => {
+            const response = await fetch('http://localhost:8080/rest-time/' + selectedDate);
+            const data = await response.json();
+
+            let option = "";
+
+            for (let i = 0; i < data.length; i++) {
+                option += "<option value=" + data[i].id + ">" + data[i].timeValue + "</option>";
+            }
+            document.getElementById("inputTime").innerHTML = option;
+        }
+        model().then();
+    }
+
+    function generateConfirm(){
+        const carMark = document.getElementById('inputCarMark');
+        setValue('confirmCarMark', carMark.value);
+
+        const carModel = document.getElementById('inputCarModel');
+        setValue('confirmCarModel', carModel.value);
+
+        const carText = document.getElementById('carText');
+        carText.innerHTML = '';
+        carText.innerHTML += carMark[carMark.selectedIndex].text;
+        carText.innerHTML += ' ';
+        carText.innerHTML += carModel.options[carModel.selectedIndex].text;
+
+        const confDate = document.getElementById('inputDate');
+        setValue('confirmDate', confDate.value);
+
+        const confTime = document.getElementById('inputTime');
+        setValue('confirmTime', confTime.value);
+
+        const dateText = document.getElementById('dateText');
+        dateText.innerHTML = '';
+        dateText.innerHTML += confDate.value;
+        dateText.innerHTML += ' в ';
+        dateText.innerHTML += confTime.options[carModel.selectedIndex].text;
+    }
+
+    function setValue(id, value){
+        document.getElementById(id).setAttribute("value", value);
     }
 
 </script>
