@@ -18,7 +18,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "usr")
-public class User implements UserDetails {
+public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -39,12 +39,15 @@ public class User implements UserDetails {
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Role> role;
+    private Set<Role> roles = new HashSet<>();
 
-    // userDetail methods
+    public boolean isManager(){
+        return roles.contains(Role.ROLE_MANAGER);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRole();
+        return getRoles();
     }
 
     @Override
@@ -66,9 +69,4 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-    public boolean isManager(){
-        return role.contains(Role.MANAGER);
-    }
-
 }

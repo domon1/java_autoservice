@@ -7,6 +7,7 @@ import com.course.project.carservice.service.ServicesService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -27,13 +28,13 @@ public class RecordController {
         this.servicesService = servicesService;
     }
 
-    @GetMapping
-    public String record(Model model){
+    @GetMapping("{id}")
+    public String recordOn(Model model, @PathVariable("id") Long id){
         LocalDate currDate = LocalDate.now();
         model.addAttribute("carMarks", carsService.findAllMark());
         model.addAttribute("locDate", currDate.format(ofPattern("yyyy-MM-dd")));
-        model.addAttribute("service", servicesService.findById(1L));
-        return "record";
+        model.addAttribute("service", servicesService.findById(id));
+        return "someRecord";
     }
 
     @PostMapping

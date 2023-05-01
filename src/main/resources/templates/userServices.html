@@ -17,7 +17,7 @@
                 <p class="card-text" th:text="${autoservice.name}"></p>
                 <p class="card-text" th:text="${autoservice.price}"></p>
                 <p class="card-text" th:text="${autoservice.category.name}"></p>
-                <a th:href="@{#}" class="btn btn-primary">Записаться</a>
+                <a th:href="@{'/record/' + ${autoservice.id}}" class="btn btn-primary">Записаться</a>
             </div>
         </div>
     </div>

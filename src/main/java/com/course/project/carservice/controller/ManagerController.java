@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
@@ -60,11 +59,11 @@ public class ManagerController {
                 .map(Role::name)
                 .collect(Collectors.toSet());
 
-        user.getRole().clear();
+        user.getRoles().clear();
 
         for (String key : form.keySet()) {
             if (roles.contains(key)){
-                user.getRole().add(Role.valueOf(key));
+                user.getRoles().add(Role.valueOf(key));
             }
         }
 

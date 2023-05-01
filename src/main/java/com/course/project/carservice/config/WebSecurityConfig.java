@@ -1,5 +1,6 @@
-package com.course.project.carservice.security;
+package com.course.project.carservice.config;
 
+import com.course.project.carservice.service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,18 +14,22 @@ import org.springframework.stereotype.Component;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class WebSecurityConfig{
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();  // Шифратор пароля
+    private final CustomUserDetailsService userDetailsService;
+
+    public WebSecurityConfig(CustomUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
     }
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
+    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/home", "/register", "/record", "/services/**").permitAll()
-                        //.requestMatchers("/manager").hasRole("MANAGER")
+                        .requestMatchers("/manager/**").hasRole("USER")
+                        .requestMatchers("/", "/home", "/register", "/record/**", "/services/**", "/login").permitAll()
+                        .requestMatchers("/rest-car/**", "/rest-time/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                .userDetailsService(userDetailsService)
                 .formLogin((form) -> form
                         .loginPage("/login")
                         .permitAll()
@@ -33,9 +38,13 @@ public class WebSecurityConfig{
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/home")
                         .invalidateHttpSession(true)
-
                 );
 
         return httpSecurity.build();
+    }
+
+    @Bean
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();  // Шифратор пароля
     }
 }

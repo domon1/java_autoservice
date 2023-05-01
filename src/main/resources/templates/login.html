@@ -13,6 +13,9 @@
 <div class="container mt-5">
     <p class="fs-1 my-3">Вход в личный кабинет</p>
     <form th:action="@{/login}" method="post">
+        <div th:if="${param.error}">Ошибка при вводе имени пользователя или пароля</div>
+        <div th:if="${param.logout}">
+            You have been logged out.</div>
         <div class="form-floating mb-3 col-sm-6">
             <input type="text" class="form-control" id="floatingInput" placeholder="Введите логин" name="username">
             <label for="floatingInput">Логин</label>

@@ -51,6 +51,7 @@ create table spare (
     price integer not null,
     primary key (id));
 
+/* TODO изменить role -> roles*/
 create table user_role (
     user_id bigint not null,
     role varchar(20));

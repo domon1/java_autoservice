@@ -1,3 +1,4 @@
+/* TODO измненить менеджеру пароль на зашифрованный */
 insert into usr (id, username, password, first_name, last_name, phone_number)
 values (1, 'manager', 'manager', 'Dmitry', 'Komarov', '9527652044');
 

@@ -3,9 +3,7 @@ package com.course.project.carservice.service;
 import com.course.project.carservice.domain.Role;
 import com.course.project.carservice.domain.User;
 import com.course.project.carservice.repository.UserRepo;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +12,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService implements UserDetailsService {
+@Slf4j
+public class UserService{
     public final UserRepo userRepo;
     public final PasswordEncoder passwordEncoder;
     public UserService(UserRepo userRepo, PasswordEncoder passwordEncoder) {
@@ -22,14 +21,9 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Override  // add user not found exception
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepo.findByUsername(username);
-    }
-
     public boolean isExist(User user){
-        User dbUser = userRepo.findByUsername(user.getUsername());
-        return dbUser == null;
+        Optional<User> dbUser = userRepo.findByUsername(user.getUsername());
+        return dbUser.isEmpty();
     }
 
     public boolean addUser(User user){
@@ -37,8 +31,9 @@ public class UserService implements UserDetailsService {
             return false;
         }
 
-        user.setRole(Collections.singleton(Role.USER));
+        user.setRoles(Collections.singleton(Role.ROLE_USER));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        log.info("Generated password: " + user.getPassword());
         userRepo.save(user);
 
         return true;
@@ -55,20 +50,4 @@ public class UserService implements UserDetailsService {
     public List<User> findAll(){
         return userRepo.findAll();
     }
-
-    /*public List<User> findAllUser(){
-        return userRepo.findByRole(Collections.singleton(Role.USER));
-    }
-
-    public List<User> findAllStaff(){
-        return userRepo.findByRole(Collections.singleton(Role.STAFF));
-    }
-
-    public List<User> findAllManager(){
-        return userRepo.findByRole(Collections.singleton(Role.MANAGER));
-    }
-
-    public List<User> findAllMaster(){
-        return userRepo.findByRole(Collections.singleton(Role.MASTER));
-    }*/
 }
