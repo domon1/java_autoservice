@@ -56,10 +56,14 @@ public class RecordService {
                 .orElseThrow(() -> new UserRecordNotFoundException(id));
     }
 
-    public void updateState(UserRecord userRecord, String state){
+    public void updateState(Long id, String state){
+        UserRecord userRecord = findById(id);
         userRecord.setState(state);
         save(userRecord);
     }
 
 
+    public List<UserRecord> findAllByUserPhone(String userPhone) {
+        return userRecordRepo.findAllByPhoneNumber(userPhone);
+    }
 }

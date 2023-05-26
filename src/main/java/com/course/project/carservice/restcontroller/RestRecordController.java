@@ -2,10 +2,7 @@ package com.course.project.carservice.restcontroller;
 
 import com.course.project.carservice.domain.UserRecord;
 import com.course.project.carservice.service.RecordService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,15 +16,37 @@ public class RestRecordController {
         this.recordService = recordService;
     }
 
+
+    /* TODO заменить object на ResponseEntity, добавить DTO*/
+
     @GetMapping("{date}")
     public List<UserRecord> findByDate(@PathVariable("date") LocalDate localDate){
         return recordService.findAllByDate(localDate);
     }
 
     // Для пользователя
-    // TODO добавить запрос на все записи пользователя
-    // TODO добваить запрос на детализацию записи
     // TODO добавить запрос на добавиление записи
+    @PostMapping
+    public void recordOnService(@RequestBody UserRecord userRecord){
+        recordService.save(userRecord);
+    }
+
+    // TODO добавить запрос на все записи пользователя
+    @GetMapping("{userPhone}")
+    public List<UserRecord> findAllByDate(@PathVariable String userPhone){
+        return recordService.findAllByUserPhone(userPhone);
+    }
+
+    // TODO добваить запрос на детализацию записи
+    @GetMapping("{recordId}")
+    public UserRecord findById(@PathVariable Long recordId){
+        return recordService.findById(recordId);
+    }
+
     // Для сотрудника
-    // TODO добваить запрос на изменение статуса записи (обработка, выполнение, завершение)
+    // TODO добваить запрос на изменение статуса записи (обработка, выполнение, завершение), preAuthorize(MASTER)
+    @PutMapping("{recordId}")
+    public void updateRecordState(@PathVariable Long recordId, @RequestParam("state") String state){
+        recordService.updateState(recordId, state);
+    }
 }
