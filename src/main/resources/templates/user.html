@@ -33,7 +33,7 @@
         </div>
         <div class="form-check" th:each="role : ${roles}">
             <label class="form-check-label" for="flexCheckChecked" th:text="${role}"></label>
-            <input class="form-check-input" type="checkbox" id="flexCheckChecked" th:checked="${#lists.contains(currUser.get().role, role)}" th:name="${role}">
+            <input class="form-check-input" type="checkbox" id="flexCheckChecked" th:checked="${#lists.contains(currUser.get().roles, role)}" th:name="${role}">
         </div>
         <div class="col-12">
             <button type="submit" class="btn btn-primary btn-lg my-3">Изменить</button>

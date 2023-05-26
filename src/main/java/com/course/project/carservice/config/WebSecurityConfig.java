@@ -26,7 +26,7 @@ public class WebSecurityConfig{
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/manager/**").hasRole("USER")
                         .requestMatchers("/", "/home", "/register", "/record/**", "/services/**", "/login").permitAll()
-                        .requestMatchers("/rest-car/**", "/rest-time/**").permitAll()
+                        .requestMatchers("/rest-car/**", "/rest-time/**", "/rest-auto-service/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .userDetailsService(userDetailsService)

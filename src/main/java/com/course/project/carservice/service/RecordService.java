@@ -53,11 +53,13 @@ public class RecordService {
 
     public UserRecord findById(Long id){
         return userRecordRepo.findById(id)
-                .orElseThrow(() -> new UserRecordNotFoundException("UserRecord with id: " + id + " not found!"));
+                .orElseThrow(() -> new UserRecordNotFoundException(id));
     }
 
     public void updateState(UserRecord userRecord, String state){
         userRecord.setState(state);
         save(userRecord);
     }
+
+
 }

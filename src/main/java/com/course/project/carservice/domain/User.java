@@ -41,10 +41,6 @@ public class User implements UserDetails{
     @Enumerated(EnumType.STRING)
     private Set<Role> roles = new HashSet<>();
 
-    public boolean isManager(){
-        return roles.contains(Role.ROLE_MANAGER);
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return getRoles();

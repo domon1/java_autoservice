@@ -35,6 +35,4 @@ public class UserRecord {
     @ManyToOne
     @JoinColumn(name = "service_id")
     private AutoService autoService;
-    @OneToMany(mappedBy = "record")
-    private Set<Order> orders;
 }

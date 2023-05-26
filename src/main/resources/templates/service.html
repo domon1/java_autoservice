@@ -12,15 +12,15 @@
 
 <div class="container mt-5">
   <p class="fs-1 my-3">Изменение услуги</p>
-  <form class="row g-3" method="POST" th:action="@{${service.get().id}}" >
-    <input type="hidden" name="id" th:value="${service.get().id}">
+  <form class="row g-3" method="POST" th:action="@{${service.getId()}}" >
+    <input type="hidden" name="id" th:value="${service.getId()}">
     <div class="col-md-6">
       <label for="inputFirstName" class="form-label">Название</label>
-      <input type="text" class="form-control" id="inputFirstName" name="name" th:value="${service.get().name}">
+      <input type="text" class="form-control" id="inputFirstName" name="name" th:value="${service.getName()}">
     </div>
     <div class="col-md-6">
       <label for="inputLastName" class="form-label">Описание</label>
-      <input type="text" class="form-control" id="inputLastName" name="description" th:value="${service.get().description}">
+      <input type="text" class="form-control" id="inputLastName" name="description" th:value="${service.getDescription()}">
     </div>
     <div class="col-md-6">
       <label for="inputServiceCategory" class="form-label">Категория</label>
@@ -33,7 +33,7 @@
     </div>
     <div class="col-md-6">
       <label for="inputAddress2" class="form-label">Цена</label>
-      <input type="tel" class="form-control" id="inputAddress2" name="price" th:value="${service.get().price}">
+      <input type="tel" class="form-control" id="inputAddress2" name="price" th:value="${service.getPrice()}">
     </div>
     <div class="col-12">
       <button type="submit" class="btn btn-primary btn-lg my-3">Изменить</button>
