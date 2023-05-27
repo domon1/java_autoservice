@@ -37,7 +37,7 @@ public class UserService{
             return false;
         }
 
-        user.setRoles(Collections.singleton(Role.ROLE_USER));
+        user.setRoles(Collections.singleton(Role.USER));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         log.info("Generated password: " + user.getPassword());
         userRepo.save(user);

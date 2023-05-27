@@ -6,7 +6,6 @@ import com.course.project.carservice.util.CategoryNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CategoryService {

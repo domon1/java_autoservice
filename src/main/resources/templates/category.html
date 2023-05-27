@@ -12,11 +12,11 @@
 
 <div class="container mt-5">
     <p class="fs-1 my-3">Изменение категории</p>
-    <form class="row g-3" method="POST" th:action="@{${category.get().id}}" >
-        <input type="hidden" name="id" th:value="${category.get().id}">
+    <form class="row g-3" method="POST" th:action="@{/category/${category.getId()}}" th:object="${category}">
+        <input type="hidden" name="id" th:value="${category.getId()}">
         <div class="col-md-6">
             <label for="inputCategoryName" class="form-label">Название</label>
-            <input type="text" class="form-control" id="inputCategoryName" name="name" th:value="${category.get().name}">
+            <input type="text" class="form-control" id="inputCategoryName" name="name" th:value="${category.getName()}">
         </div>
         <div class="col-12">
             <button type="submit" class="btn btn-primary btn-lg my-3">Изменить</button>

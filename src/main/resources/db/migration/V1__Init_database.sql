@@ -29,7 +29,7 @@ create table record (
 
 create table user_role (
     user_id bigint not null,
-    role varchar(20));
+    roles varchar(20));
 
 create table usr (
     id bigint not null auto_increment,

@@ -15,15 +15,13 @@
                     <a class="nav-link active" aria-current="page" href="/" >Домой</a>
                 </li>
             </ul>
-            <!-- TODO Добавить условие: только для авторизованного пользователя (sec:authorize неработает!?) sec:authorize="hasRole('USER')"-->
                 <ul class="nav-item dropdown mx-3" sec:authorize="isAuthenticated()">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Действия
                     </a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" th:href="@{/personal}">Личный кабинет</a></li>
-                        <!-- TODO Добавить условие: только для менеджера (sec:authorize неработает!?) -->
-                        <li><a class="dropdown-item" th:href="@{/manager}" sec:authorize="hasRole('MANAGER')">!MANAGER!</a></li>
+                        <li><a class="dropdown-item" th:href="@{/manager}" sec:authorize="hasAuthority('MANAGER')">!MANAGER!</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="javascript: document.logoutForm.submit()">Выход</a></li>
                     </ul>

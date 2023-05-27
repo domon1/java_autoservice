@@ -13,7 +13,7 @@
 <div th:replace="~{navbar::navigation}"></div>
 
 <div class="container">
-    <h3 th:text="'Запишитесь на услугу ' + ${service.get().name}"></h3>
+    <h3 th:text="'Запишитесь на услугу ' + ${service.getName()}"></h3>
     <div class="row g-3">
         <div class="col-md-6">
             <label for="inputCarMark" class="form-label">Марка</label>
@@ -86,7 +86,7 @@
                             <input type="text" class="form-control" id="recipient-phone" name="phoneNumber" placeholder="8(xxx)xxx-xx-xx" minlength="10" maxlength="10">
                         </div>
                         <div>
-                            <input type="hidden" class="form-control" th:value="${service.get().id}" name="autoService" readonly>
+                            <input type="hidden" class="form-control" th:value="${service.getId()}" name="autoService" readonly>
                             <input type="hidden" class="form-control" value="wait" name="state" readonly>
                         </div>
                         <div class="mb-3 col-12">

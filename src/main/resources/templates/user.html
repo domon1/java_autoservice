@@ -12,28 +12,28 @@
 
 <div class="container mt-5">
     <p class="fs-1 my-3">Изменение пользователя</p>
-    <form class="row g-3" method="POST" th:action="@{${currUser.get().id}}" >
-        <input type="hidden" name="id" th:value="${currUser.get().id}">
-        <input type="hidden" name="password" th:value="${currUser.get().password}">
+    <form class="row g-3" method="POST" th:action="@{${currUser.getId()}}" >
+        <input type="hidden" name="id" th:value="${currUser.getId()}">
+        <input type="hidden" name="password" th:value="${currUser.getPassword()}">
         <div class="col-md-6">
             <label for="inputFirstName" class="form-label">Имя</label>
-            <input type="text" class="form-control" id="inputFirstName" name="firstName" th:value="${currUser.get().firstName}" readonly>
+            <input type="text" class="form-control" id="inputFirstName" name="firstName" th:value="${currUser.getFirstName()}" readonly>
         </div>
         <div class="col-md-6">
             <label for="inputLastName" class="form-label">Фамилия</label>
-            <input type="text" class="form-control" id="inputLastName" name="lastName" th:value="${currUser.get().lastName}" readonly>
+            <input type="text" class="form-control" id="inputLastName" name="lastName" th:value="${currUser.getLastName()}" readonly>
         </div>
         <div class="col-12">
             <label for="inputAddress2" class="form-label">Номер телефона</label>
-            <input type="tel" class="form-control" id="inputAddress2" placeholder="8(xxx)xxx-xx-xx" name="phoneNumber" th:value="${currUser.get().phoneNumber}" readonly>
+            <input type="tel" class="form-control" id="inputAddress2" placeholder="8(xxx)xxx-xx-xx" name="phoneNumber" th:value="${currUser.getPhoneNumber()}" readonly>
         </div>
         <div class="col-md-6">
             <label for="inputUsername" class="form-label">Логин</label>
-            <input type="text" class="form-control" id="inputUsername" placeholder="i_am_user" name="username" th:value="${currUser.get().username}">
+            <input type="text" class="form-control" id="inputUsername" placeholder="i_am_user" name="username" th:value="${currUser.getUsername()}">
         </div>
         <div class="form-check" th:each="role : ${roles}">
             <label class="form-check-label" for="flexCheckChecked" th:text="${role}"></label>
-            <input class="form-check-input" type="checkbox" id="flexCheckChecked" th:checked="${#lists.contains(currUser.get().roles, role)}" th:name="${role}">
+            <input class="form-check-input" type="checkbox" id="flexCheckChecked" th:checked="${#lists.contains(currUser.getRoles(), role)}" th:name="${role}">
         </div>
         <div class="col-12">
             <button type="submit" class="btn btn-primary btn-lg my-3">Изменить</button>

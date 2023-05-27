@@ -29,4 +29,6 @@ public class UserController {
         model.addAttribute("currRecord", recordService.findById(id));
         return "currentRecord";
     }
+
+
 }
