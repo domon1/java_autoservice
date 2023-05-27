@@ -2,6 +2,7 @@ package com.course.project.carservice.service;
 
 import com.course.project.carservice.domain.Category;
 import com.course.project.carservice.repository.CategoryRepo;
+import com.course.project.carservice.util.CategoryNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,12 +25,18 @@ public class CategoryService {
         categoryRepo.save(category);
     }
 
-    public Optional<Category> findById(Long id){
-        return categoryRepo.findById(id);
+    public Category findById(Long id){
+        return categoryRepo.findById(id)
+                .orElseThrow( () -> new CategoryNotFoundException(id));
     }
 
     public void delete(Long id){
         categoryRepo.deleteById(id);
     }
 
+    public void updateCategory(Long id, Category category) {
+        Category dbCategory = findById(id);
+        dbCategory.setName(category.getName());
+        save(dbCategory);
+    }
 }

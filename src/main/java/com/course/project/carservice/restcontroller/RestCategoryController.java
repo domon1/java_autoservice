@@ -2,9 +2,7 @@ package com.course.project.carservice.restcontroller;
 
 import com.course.project.carservice.domain.Category;
 import com.course.project.carservice.service.CategoryService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,6 +22,20 @@ public class RestCategoryController {
 
     // Для менеджера
     // TODO добавить запрос на добавление категории
+    @PostMapping
+    public void createCategory(@RequestBody Category category){
+        categoryService.save(category);
+    }
+
     // TODO добавить запрос на удаление категории
+    @DeleteMapping("{id}")
+    public void deleteCategory(@PathVariable Long id){
+        categoryService.delete(id);
+    }
+
     // TODO добавить запрос на изменение категории
+    @PutMapping("{id}")
+    public void updateCategory(@PathVariable Long id, @RequestBody Category category){
+        categoryService.updateCategory(id, category);
+    }
 }

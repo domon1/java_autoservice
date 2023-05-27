@@ -25,26 +25,23 @@ public class RestRecordController {
     }
 
     // Для пользователя
-    // TODO добавить запрос на добавиление записи
     @PostMapping
     public void recordOnService(@RequestBody UserRecord userRecord){
         recordService.save(userRecord);
     }
 
-    // TODO добавить запрос на все записи пользователя
     @GetMapping("{userPhone}")
     public List<UserRecord> findAllByDate(@PathVariable String userPhone){
         return recordService.findAllByUserPhone(userPhone);
     }
 
-    // TODO добваить запрос на детализацию записи
     @GetMapping("{recordId}")
     public UserRecord findById(@PathVariable Long recordId){
         return recordService.findById(recordId);
     }
 
     // Для сотрудника
-    // TODO добваить запрос на изменение статуса записи (обработка, выполнение, завершение), preAuthorize(MASTER)
+    // TODO добваить preAuthorize(MASTER)
     @PutMapping("{recordId}")
     public void updateRecordState(@PathVariable Long recordId, @RequestParam("state") String state){
         recordService.updateState(recordId, state);

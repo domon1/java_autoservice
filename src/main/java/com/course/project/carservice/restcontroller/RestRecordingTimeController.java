@@ -15,7 +15,6 @@ import java.util.List;
 public class RestRecordingTimeController {
     private final RecordService recordService;
 
-
     public RestRecordingTimeController(RecordService recordService) {
         this.recordService = recordService;
     }

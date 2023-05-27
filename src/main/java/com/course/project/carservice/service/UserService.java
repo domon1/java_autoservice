@@ -3,6 +3,7 @@ package com.course.project.carservice.service;
 import com.course.project.carservice.domain.Role;
 import com.course.project.carservice.domain.User;
 import com.course.project.carservice.repository.UserRepo;
+import com.course.project.carservice.util.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,13 +22,18 @@ public class UserService{
         this.passwordEncoder = passwordEncoder;
     }
 
-    public boolean isExist(User user){
+    public boolean isUserExist(User user){
         Optional<User> dbUser = userRepo.findByUsername(user.getUsername());
         return dbUser.isEmpty();
     }
 
+    public boolean isPhoneExist(User user){
+        Optional<User> dbUser = userRepo.findByPhoneNumber(user.getPhoneNumber());
+        return dbUser.isEmpty();
+    }
+
     public boolean addUser(User user){
-        if (!isExist(user)) {
+        if (!isUserExist(user) && !isPhoneExist(user)) {
             return false;
         }
 
@@ -43,8 +49,9 @@ public class UserService{
         userRepo.save(user);
     }
 
-    public Optional<User> findById(Long id){
-        return userRepo.findById(id);
+    public User findById(Long id){
+        return userRepo.findById(id)
+                .orElseThrow( () -> new UserNotFoundException(id));
     }
 
     public List<User> findAll(){
