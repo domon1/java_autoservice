@@ -21,12 +21,13 @@ public class UserController {
     @GetMapping
     public String personalArea(@AuthenticationPrincipal User user, Model model){
         model.addAttribute("userInfo", user);
+        model.addAttribute("records", recordService.findAllByUserPhone(user.getPhoneNumber()));
         return "personalArea";
     }
 
     @GetMapping("{id}")
-    public String recordDetails(Model model, @PathVariable("id") Long id){
-        model.addAttribute("currRecord", recordService.findById(id));
+    public String recordDetails(Model model, @PathVariable Long id, @AuthenticationPrincipal User user){
+        model.addAttribute("currRecord", recordService.findByUser(id, user.getPhoneNumber()));
         return "currentRecord";
     }
 

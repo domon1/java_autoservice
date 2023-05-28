@@ -56,12 +56,22 @@ public class RecordService {
                 .orElseThrow(() -> new UserRecordNotFoundException(id));
     }
 
+    public UserRecord findByUser(Long id, String phone){
+        UserRecord record = findById(id);
+        if (!record.getPhoneNumber().equals(phone)){
+            throw new UserRecordNotFoundException(id);
+        } else return record;
+    }
+
+    public List<UserRecord> findByState(String state){
+        return userRecordRepo.findAllByState(state);
+    }
+
     public void updateState(Long id, String state){
         UserRecord userRecord = findById(id);
         userRecord.setState(state);
         save(userRecord);
     }
-
 
     public List<UserRecord> findAllByUserPhone(String userPhone) {
         return userRecordRepo.findAllByPhoneNumber(userPhone);

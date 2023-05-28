@@ -13,4 +13,6 @@ public interface UserRecordRepo extends JpaRepository<UserRecord, Long> {
     List<UserRecord> findAllByDate(LocalDate date);
 
     List<UserRecord> findAllByPhoneNumber(String phone);
+
+    List<UserRecord> findAllByState(String state);
 }

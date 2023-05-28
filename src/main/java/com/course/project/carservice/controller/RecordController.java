@@ -4,12 +4,10 @@ import com.course.project.carservice.domain.UserRecord;
 import com.course.project.carservice.service.CarsService;
 import com.course.project.carservice.service.RecordService;
 import com.course.project.carservice.service.ServicesService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 
@@ -29,12 +27,19 @@ public class RecordController {
     }
 
     @GetMapping("{id}")
-    public String recordOn(Model model, @PathVariable("id") Long id){
+    public String recordOn(Model model, @PathVariable Long id){
         LocalDate currDate = LocalDate.now();
         model.addAttribute("carMarks", carsService.findAllMark());
         model.addAttribute("locDate", currDate.format(ofPattern("yyyy-MM-dd")));
         model.addAttribute("service", servicesService.findById(id));
         return "someRecord";
+    }
+
+    @PreAuthorize("hasAuthority('MASTER')")
+    @GetMapping("update/{id}")
+    public String updateRecord(@PathVariable Long id, @RequestParam String state){
+        recordService.updateState(id, state);
+        return "redirect:/staff";
     }
 
     @PostMapping
