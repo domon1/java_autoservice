@@ -2,6 +2,10 @@ package com.course.project.carservice.restcontroller;
 
 import com.course.project.carservice.domain.Category;
 import com.course.project.carservice.service.CategoryService;
+import com.course.project.carservice.util.CategoryNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,26 +20,34 @@ public class RestCategoryController {
     }
 
     @GetMapping
-    public List<Category> findAll(){
-        return categoryService.findAll();
+    public ResponseEntity<List<Category>> findAll(){
+        List<Category> all = categoryService.findAll();
+        return ResponseEntity.ok(all);
     }
 
-    // Для менеджера
-    // TODO добавить запрос на добавление категории
+    @PreAuthorize("hasAuthority('MANAGER')")
     @PostMapping
-    public void createCategory(@RequestBody Category category){
+    public ResponseEntity<HttpStatus> createCategory(@RequestBody Category category){
         categoryService.save(category);
+        return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
-    // TODO добавить запрос на удаление категории
+    @PreAuthorize("hasAuthority('MANAGER')")
     @DeleteMapping("{id}")
-    public void deleteCategory(@PathVariable Long id){
+    public ResponseEntity<HttpStatus> deleteCategory(@PathVariable Long id){
         categoryService.delete(id);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    // TODO добавить запрос на изменение категории
+    @PreAuthorize("hasAuthority('MANAGER')")
     @PutMapping("{id}")
-    public void updateCategory(@PathVariable Long id, @RequestBody Category category){
-        categoryService.updateCategory(id, category);
+    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category category){
+        Category updateCategory = categoryService.updateCategory(id, category);
+        return ResponseEntity.ok(updateCategory);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<CategoryNotFoundException> notFound(CategoryNotFoundException e){
+        return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
     }
 }

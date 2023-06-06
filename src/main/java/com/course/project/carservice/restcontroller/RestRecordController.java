@@ -1,7 +1,13 @@
 package com.course.project.carservice.restcontroller;
 
+import com.course.project.carservice.domain.User;
 import com.course.project.carservice.domain.UserRecord;
 import com.course.project.carservice.service.RecordService;
+import com.course.project.carservice.util.UserRecordNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -16,34 +22,40 @@ public class RestRecordController {
         this.recordService = recordService;
     }
 
-
-    /* TODO заменить object на ResponseEntity, добавить DTO*/
-
+    @PreAuthorize("hasAuthority('MANAGER')")
     @GetMapping("{date}")
-    public List<UserRecord> findByDate(@PathVariable("date") LocalDate localDate){
-        return recordService.findAllByDate(localDate);
+    public ResponseEntity<List<UserRecord>> findByDate(@PathVariable("date") LocalDate localDate){
+        List<UserRecord> allByDate = recordService.findAllByDate(localDate);
+        return ResponseEntity.ok(allByDate);
     }
 
-    // Для пользователя
     @PostMapping
-    public void recordOnService(@RequestBody UserRecord userRecord){
+    public ResponseEntity<HttpStatus> recordOnService(@RequestBody UserRecord userRecord){
         recordService.save(userRecord);
+        return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
     @GetMapping("{userPhone}")
-    public List<UserRecord> findAllByDate(@PathVariable String userPhone){
-        return recordService.findAllByUserPhone(userPhone);
+    public ResponseEntity<List<UserRecord>> findAllByUserPhone(@PathVariable String userPhone){
+        List<UserRecord> allByUserPhone = recordService.findAllByUserPhone(userPhone);
+        return ResponseEntity.ok(allByUserPhone);
     }
 
     @GetMapping("{recordId}")
-    public UserRecord findById(@PathVariable Long recordId){
-        return recordService.findById(recordId);
+    public ResponseEntity<UserRecord> findCurrentByUser(@PathVariable Long recordId, @AuthenticationPrincipal User user){
+        UserRecord byUser = recordService.findByUser(recordId, user.getPhoneNumber());
+        return ResponseEntity.ok(byUser);
     }
 
-    // Для сотрудника
-    // TODO добваить preAuthorize(MASTER)
+    @PreAuthorize("hasAuthority('MASTER')")
     @PutMapping("{recordId}")
-    public void updateRecordState(@PathVariable Long recordId, @RequestParam("state") String state){
-        recordService.updateState(recordId, state);
+    public ResponseEntity<UserRecord> updateRecordState(@PathVariable Long recordId, @RequestParam("state") String state){
+        UserRecord userRecord = recordService.updateState(recordId, state);
+        return ResponseEntity.ok(userRecord);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<UserRecordNotFoundException> notFound(UserRecordNotFoundException e){
+        return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
     }
 }

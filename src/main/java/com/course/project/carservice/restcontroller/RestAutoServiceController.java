@@ -2,6 +2,10 @@ package com.course.project.carservice.restcontroller;
 
 import com.course.project.carservice.domain.AutoService;
 import com.course.project.carservice.service.ServicesService;
+import com.course.project.carservice.util.AutoServiceNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,37 +20,46 @@ public class RestAutoServiceController {
     }
 
     @GetMapping
-    public List<AutoService> findAll(){
-        return servicesService.findAll();
+    public ResponseEntity<List<AutoService>> findAll(){
+        List<AutoService> all = servicesService.findAll();
+        return ResponseEntity.ok(all);
     }
 
     @GetMapping("{categoryId}")
-    public List<AutoService> findAllByCategory(@PathVariable Long categoryId){
-        return servicesService.findAllByCategory(categoryId);
+    public ResponseEntity<List<AutoService>> findAllByCategory(@PathVariable Long categoryId){
+        List<AutoService> allByCategory = servicesService.findAllByCategory(categoryId);
+        return ResponseEntity.ok(allByCategory);
     }
 
-    // TODO мб поменять на хттп статус 404
     @GetMapping("service/{serviceId}")
-    public AutoService findById(@PathVariable Long serviceId){
-        return servicesService.findById(serviceId);
+    public ResponseEntity<AutoService> findById(@PathVariable Long serviceId){
+        AutoService byId = servicesService.findById(serviceId);
+        return ResponseEntity.ok(byId);
     }
 
-    // Для менеджера
-    // TODO mb use ResponseEntity<HttpStatus>?
+    @PreAuthorize("hasAuthority('MANAGER')")
     @PostMapping
-    public AutoService createService(@RequestBody AutoService autoService){
-        return servicesService.save(autoService);
+    public ResponseEntity<HttpStatus> createService(@RequestBody AutoService autoService){
+        servicesService.save(autoService);
+        return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
-    // TODO добавить запрос на удаление сервиса
+    @PreAuthorize("hasAuthority('MANAGER')")
     @DeleteMapping("{serviceId}")
-    public void deleteService(@PathVariable Long serviceId){
+    public ResponseEntity<HttpStatus> deleteService(@PathVariable Long serviceId){
         servicesService.delete(serviceId);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    // TODO добавить запрос на изменение сервиса
+    @PreAuthorize("hasAuthority('MANAGER')")
     @PutMapping("{serviceId}")
-    public AutoService updateService(@PathVariable Long serviceId, @RequestBody AutoService autoService){
-        return servicesService.update(serviceId, autoService);
+    public ResponseEntity<AutoService> updateService(@PathVariable Long serviceId, @RequestBody AutoService autoService){
+        AutoService service = servicesService.update(serviceId, autoService);
+        return ResponseEntity.ok(service);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<AutoServiceNotFoundException> notFound(AutoServiceNotFoundException e){
+        return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
     }
 }

@@ -8,9 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -43,6 +42,22 @@ public class UserService{
         userRepo.save(user);
 
         return true;
+    }
+
+    public void editUser(String username, Map<String, String> form, Long id){
+        User user = findById(id);
+        user.setUsername(username);
+        Set<String> roles = Arrays.stream(Role.values())
+                .map(Role::name)
+                .collect(Collectors.toSet());
+        user.getRoles().clear();
+
+        for (String key : form.keySet()) {
+            if (roles.contains(key)){
+                user.getRoles().add(Role.valueOf(key));
+            }
+        }
+        save(user);
     }
 
     public void save(User user){

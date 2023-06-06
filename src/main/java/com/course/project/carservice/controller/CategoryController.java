@@ -2,6 +2,7 @@ package com.course.project.carservice.controller;
 
 import com.course.project.carservice.domain.Category;
 import com.course.project.carservice.service.CategoryService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,21 +23,21 @@ public class CategoryController {
         return "userCategory";
     }
 
-    // Создать категорию
+    @PreAuthorize("hasAuthority('MANAGER')")
     @PostMapping("newCategory")
     public String newCategory(Category category){
         categoryService.save(category);
         return "redirect:/manager";
     }
 
-    // Обновить категорию
+    @PreAuthorize("hasAuthority('MANAGER')")
     @PostMapping("{id}")
     public String editCategory(@RequestParam Long id, @ModelAttribute("category") Category category){
         categoryService.updateCategory(id, category);
         return "redirect:/manager";
     }
 
-    // Удалить категорию
+    @PreAuthorize("hasAuthority('MANAGER')")
     @GetMapping("delete/{id}")
     public String deleteCategory(@PathVariable("id") Long id){
         categoryService.delete(id);

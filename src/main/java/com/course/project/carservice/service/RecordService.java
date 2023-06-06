@@ -4,13 +4,17 @@ import com.course.project.carservice.domain.RecordingTime;
 import com.course.project.carservice.domain.UserRecord;
 import com.course.project.carservice.repository.UserRecordRepo;
 import com.course.project.carservice.util.UserRecordNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
+@Transactional(readOnly = true)
 public class RecordService {
     private final UserRecordRepo userRecordRepo;
     private final RecordingTimeService timeService;
@@ -47,8 +51,9 @@ public class RecordService {
         }
     }
 
-    public void save(UserRecord userRecord){
-        userRecordRepo.save(userRecord);
+    @Transactional
+    public UserRecord save(UserRecord userRecord){
+        return userRecordRepo.save(userRecord);
     }
 
     public UserRecord findById(Long id){
@@ -67,10 +72,12 @@ public class RecordService {
         return userRecordRepo.findAllByState(state);
     }
 
-    public void updateState(Long id, String state){
+    @Transactional
+    public UserRecord updateState(Long id, String state){
         UserRecord userRecord = findById(id);
         userRecord.setState(state);
-        save(userRecord);
+        log.info("Update record state with id: " + id + "on: " + state);
+        return save(userRecord);
     }
 
     public List<UserRecord> findAllByUserPhone(String userPhone) {

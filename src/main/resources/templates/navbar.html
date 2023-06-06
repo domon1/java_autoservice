@@ -22,6 +22,7 @@
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item" th:href="@{/personal}">Личный кабинет</a></li>
                         <li><a class="dropdown-item" th:href="@{/manager}" sec:authorize="hasAuthority('MANAGER')">!MANAGER!</a></li>
+                        <li><a class="dropdown-item" th:href="@{/manager}" sec:authorize="hasAuthority('MASTER')">!MASTER!</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="javascript: document.logoutForm.submit()">Выход</a></li>
                     </ul>

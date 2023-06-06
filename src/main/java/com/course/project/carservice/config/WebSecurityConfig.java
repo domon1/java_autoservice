@@ -25,7 +25,8 @@ public class WebSecurityConfig{
         httpSecurity
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/manager/**").hasAnyAuthority("MANAGER")
-                        .requestMatchers("/", "/home", "/register", "/record/**", "/services/**", "/login").permitAll()
+                        .requestMatchers("/staff/**").hasAnyAuthority( "MASTER")
+                        .requestMatchers("/", "/home", "/register", "/record/**", "/autoservice/**", "/category/**","/login").permitAll()
                         .requestMatchers("/rest-car/**", "/rest-time/**", "/rest-auto-service/**").permitAll()
                         .anyRequest().authenticated()
                 )

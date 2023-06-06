@@ -42,28 +42,9 @@ public class ManagerController {
         return "/user";
     }
 
-    // убрать логику в сервисный слой
     @PostMapping("/user/{id}")
-    public String userEdit(
-            @RequestParam String username,
-            @RequestParam Map<String, String> form,
-            @RequestParam("id") User user
-            ){
-        user.setUsername(username);
-        Set<String> roles = Arrays.stream(Role.values())
-                .map(Role::name)
-                .collect(Collectors.toSet());
-
-        user.getRoles().clear();
-
-        for (String key : form.keySet()) {
-            if (roles.contains(key)){
-                user.getRoles().add(Role.valueOf(key));
-            }
-        }
-
-        userService.save(user);
-
+    public String userEdit(@RequestParam String username, @RequestParam Map<String, String> form, @PathVariable Long id){
+        userService.editUser(username, form, id);
         return "redirect:/manager";
     }
 

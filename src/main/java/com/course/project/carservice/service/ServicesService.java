@@ -3,11 +3,15 @@ package com.course.project.carservice.service;
 import com.course.project.carservice.domain.AutoService;
 import com.course.project.carservice.repository.AutoServiceRepo;
 import com.course.project.carservice.util.AutoServiceNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Slf4j
+@Transactional(readOnly = true)
 public class ServicesService {
     private final AutoServiceRepo autoServiceRepo;
 
@@ -15,13 +19,16 @@ public class ServicesService {
         this.autoServiceRepo = autoServiceRepo;
     }
 
+    @Transactional
     public AutoService save(AutoService autoService) {
+        log.info("Save autoservice with id: " + autoService.getId());
         return autoServiceRepo.save(autoService);
     }
 
-    /* TODO ддобавить в бд скрипт каскадное удаление (set 1) */
+    @Transactional
     public void delete(Long id) {
         autoServiceRepo.deleteById(id);
+        log.info("Delete autoservice with id: " + id);
     }
 
     public AutoService findById(Long id) {
@@ -37,7 +44,9 @@ public class ServicesService {
         return autoServiceRepo.findAllByCategoryId(categoryId);
     }
 
+    @Transactional
     public AutoService update(Long id, AutoService autoService) {
+        log.info("Update autoservice with id: " + id);
         return autoServiceRepo.findById(id)
                 .map(service -> {
                     service.setName(autoService.getName());
