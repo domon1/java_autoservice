@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>Запись на обслуживание</title>
@@ -34,8 +35,8 @@
                             <p class="card-text" th:text="${record.time.timeValue}"></p>
                             <p class="card-text" th:text="${record.state}"></p>
                             <a th:href="@{'/staff/'+${record.id}}" class="btn btn-primary">Подробнее</a>
-                            <a th:href="@{'/record/update/'+${record.id}+'?state=Отменен'}" class="btn btn-primary">Отменить</a>
-                            <a th:href="@{'/record/update/'+${record.id}+'?state=Выполнение'}" class="btn btn-primary">Принять</a>
+                            <a th:href="@{'/record/update/'+${record.id}+'?state=Отменен'}" class="btn btn-primary" sec:authorize="hasAuthority('MASTER')">Отменить</a>
+                            <a th:href="@{'/record/update/'+${record.id}+'?state=Выполнение'}" class="btn btn-primary" sec:authorize="hasAuthority('MASTER')">Принять</a>
                         </div>
                     </div>
                 </div>
@@ -52,7 +53,7 @@
                             <p class="card-text" th:text="${record.time.timeValue}"></p>
                             <p class="card-text" th:text="${record.state}"></p>
                             <a th:href="@{'/staff/'+${record.id}}" class="btn btn-primary">Подробнее</a>
-                            <a th:href="@{'/record/update/'+${record.id}+'?state=Отменен'}" class="btn btn-primary">Отменить</a>
+                            <a th:href="@{'/record/update/'+${record.id}+'?state=Отменен'}" class="btn btn-primary" sec:authorize="hasAuthority('MASTER')">Отменить</a>
                             <a th:href="@{'/record/update/'+${record.id}+'?state=Завершен'}" class="btn btn-primary">Завершить</a>
                         </div>
                     </div>

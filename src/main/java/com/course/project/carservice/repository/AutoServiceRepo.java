@@ -9,5 +9,4 @@ import java.util.List;
 @Repository
 public interface AutoServiceRepo extends JpaRepository<AutoService, Long> {
     List<AutoService> findAllByCategoryId(Long categoryId);
-    AutoService findByName(String serviceName);
 }

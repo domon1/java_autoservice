@@ -83,4 +83,11 @@ public class RecordService {
     public List<UserRecord> findAllByUserPhone(String userPhone) {
         return userRecordRepo.findAllByPhoneNumber(userPhone);
     }
+
+    @Transactional
+    public void updatePhone(String oldPhone, String newPhone) {
+        List<UserRecord> userRecords = findAllByUserPhone(oldPhone);
+        userRecords.stream().iterator().next().setPhoneNumber(newPhone);
+        userRecordRepo.saveAll(userRecords);
+    }
 }

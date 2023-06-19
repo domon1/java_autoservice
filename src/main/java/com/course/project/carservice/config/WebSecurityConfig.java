@@ -26,7 +26,8 @@ public class WebSecurityConfig{
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/manager/**").hasAnyAuthority("MANAGER")
                         .requestMatchers("/staff/**").hasAnyAuthority( "MASTER")
-                        .requestMatchers("/", "/home", "/register", "/record/**", "/autoservice/**", "/category/**","/login").permitAll()
+                        .requestMatchers("/", "/home", "/register", "/record/**", "/autoservice/**",
+                                "/category/**","/login", "/error").permitAll()
                         .requestMatchers("/rest-car/**", "/rest-time/**", "/rest-auto-service/**").permitAll()
                         .anyRequest().authenticated()
                 )
@@ -37,8 +38,10 @@ public class WebSecurityConfig{
                 )
                 .logout((logout) -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/home")
+                        .logoutSuccessUrl("/")
                         .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
                 );
 
         return httpSecurity.build();

@@ -39,6 +39,37 @@
             <button type="submit" class="btn btn-primary btn-lg my-3">Изменить</button>
         </div>
     </form>
+    <p>
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
+            Изменить пароль
+        </button>
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
+            Изменить номер
+        </button>
+    </p>
+    <div class="collapse" id="collapseExample1">
+        <form class="row g-3" method="POST" th:action="@{'/manager/user/password/'+${currUser.getId()}}">
+            <div class="col-md-6">
+                <label for="password" class="form-label">Новый пароль</label>
+                <input type="text" class="form-control" id="password" name="password">
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary my-3">Изменить</button>
+            </div>
+        </form>
+    </div>
+    <div class="collapse" id="collapseExample2">
+        <form class="row g-3" method="POST" th:action="@{'/manager/user/phone/'+${currUser.getId()}}">
+            <div class="col-md-6">
+                <label for="phone" class="form-label">Новый номер</label>
+                <input type="text" class="form-control" id="phone" name="newPhone" minlength="10" maxlength="10">
+                <input type="hidden" class="form-control" name="oldPhone" th:value="${currUser.getPhoneNumber()}">
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary my-3">Изменить</button>
+            </div>
+        </form>
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"

@@ -7,6 +7,7 @@ import com.course.project.carservice.util.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -60,6 +61,19 @@ public class UserService{
         save(user);
     }
 
+    public void changePassword(String password, Long id){
+        User user = findById(id);
+        user.setPassword(passwordEncoder.encode(password));
+        save(user);
+    }
+
+    public void changePhoneNumber(String phone, Long id){
+        User user = findById(id);
+        user.setPhoneNumber(phone);
+        save(user);
+    }
+
+    @Transactional
     public void save(User user){
         userRepo.save(user);
     }

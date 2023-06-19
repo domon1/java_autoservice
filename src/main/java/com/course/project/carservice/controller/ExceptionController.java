@@ -7,6 +7,7 @@ import com.course.project.carservice.util.UserRecordNotFoundException;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @ControllerAdvice
 public class ExceptionController {
@@ -15,5 +16,10 @@ public class ExceptionController {
     public String notFoundException(Exception exception, Model model){
         model.addAttribute("message", exception.getMessage());
         return "notFound";
+    }
+
+    @RequestMapping("/error/999")
+    public String otherError(){
+        return "home";
     }
 }

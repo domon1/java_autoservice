@@ -1,18 +1,15 @@
 package com.course.project.carservice.controller;
 
 import com.course.project.carservice.domain.Role;
-import com.course.project.carservice.domain.User;
 import com.course.project.carservice.service.CategoryService;
+import com.course.project.carservice.service.RecordService;
 import com.course.project.carservice.service.ServicesService;
 import com.course.project.carservice.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/manager")
@@ -20,11 +17,13 @@ public class ManagerController {
     private final UserService userService;
     private final ServicesService servicesService;
     private final CategoryService categoryService;
+    private final RecordService recordService;
 
-    public ManagerController(UserService userService, ServicesService servicesService, CategoryService categoryService) {
+    public ManagerController(UserService userService, ServicesService servicesService, CategoryService categoryService, RecordService recordService) {
         this.userService = userService;
         this.servicesService = servicesService;
         this.categoryService = categoryService;
+        this.recordService = recordService;
     }
 
     @GetMapping
@@ -48,14 +47,27 @@ public class ManagerController {
         return "redirect:/manager";
     }
 
+    @PostMapping("/user/password/{id}")
+    public String changePassword(@RequestParam String password, @PathVariable Long id){
+        userService.changePassword(password, id);
+        return "redirect:/manager";
+    }
+
+    @PostMapping("/user/phone/{id}")
+    public String changePhoneNumber(@RequestParam String oldPhone, @RequestParam String newPhone, @PathVariable Long id){
+        recordService.updatePhone(oldPhone, newPhone);
+        userService.changePhoneNumber(newPhone, id);
+        return "redirect:/manager";
+    }
+
     @GetMapping("/category/{id}")
-    public String category(@PathVariable("id") Long id, Model model){
+    public String category(@PathVariable Long id, Model model){
         model.addAttribute("category", categoryService.findById(id));
         return "/category";
     }
 
     @GetMapping("/service/{id}")
-    public String service(@PathVariable("id") Long id, Model model){
+    public String service(@PathVariable Long id, Model model){
         model.addAttribute("service", servicesService.findById(id));
         model.addAttribute("categories", categoryService.findAll());
         return "/service";
